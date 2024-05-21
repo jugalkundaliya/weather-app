@@ -1,31 +1,22 @@
-import React, { Fragment, useState } from "react";
+import React, { useState } from "react";
 import { Box, Card, Container, Typography } from "@mui/material";
 import WeatherForm from "./components/WeatherForm";
 import WeatherDisplay from "./components/WeatherDisplay";
 import { fetchWeather, fetchWeatherBasedOnLocation } from "./api";
-import { ForecastData, ForecastWithWeather, Unit, WeatherData } from "./types";
+import { ForecastWithWeather, Unit } from "./types";
 import ForecastDisplay from "./components/ForecastDisplay";
 
 const App: React.FC = () => {
-  const [weatherData, setWeatherData] = useState<WeatherData[]>(
+  const [forecastData, setForecastData] = useState<ForecastWithWeather[]>(
     localStorage.getItem("searchedLocations")
       ? JSON.parse(localStorage.getItem("searchedLocations") || "")
       : []
   );
-  const [forecastData, setForecastData] = useState<ForecastWithWeather[]>([]);
 
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
   const [unit, setUnit] = useState<Unit>("metric");
-
-  const handleWeatherDataAppend = (data: WeatherData) => {
-    setWeatherData((prev) => {
-      const dataToSet = [data, ...prev];
-      localStorage.setItem("searchedLocations", JSON.stringify(dataToSet));
-      return dataToSet;
-    });
-  };
 
   const handleForecastDataAppend = (data: ForecastWithWeather) => {
     setForecastData((prev) => {
